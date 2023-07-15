@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
+import Footer from "./footer";
 
-const MyPage: React.FC = () => {
+function MyPage (){
   const [saida, setSaida] = useState("");
   const [showCard, setShowCard] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -258,9 +259,8 @@ const MyPage: React.FC = () => {
           </div>)}
           
         </div>
-        <footer className="absolute bottom-0 py-4 text-center ">
-    Feito por <a href="https://github.com/Ulremberg" target="_blank" rel="noopener noreferrer">Berg</a>🚀
-  </footer>
+        <Footer className={"absolute bottom-0 py-4 text-center"}  text={'Feito por'} user={'Berg'} href={'https://github.com/Ulremberg'}/>
+    
       </div>
       
     </div>
