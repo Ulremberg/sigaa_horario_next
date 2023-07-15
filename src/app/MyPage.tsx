@@ -14,7 +14,11 @@ const MyPage: React.FC = () => {
 
   const descodificar = (entradaValor: string): string => {
     entradaValor = entradaValor.toLowerCase();
-    console.log(entradaValor);
+    entradaValor = entradaValor.trim();
+    
+    if (entradaValor.indexOf(" ") === -1) {
+      entradaValor = entradaValor.replace(/(.{4})/, "$1 ");
+    }
     const reDias = /\b\d{1,2}/;
     const reTurno = /[a-z]/;
     const reHorario = /\d{1,2}\b/;
@@ -26,31 +30,46 @@ const MyPage: React.FC = () => {
       return `<p>Código inválido</p>`;
     }
 
-    const primeiroDia = dias[0][0];
-    const segundoDia = dias[0][1];
+    const [primeiroDia, segundoDia] = entradaValor.split(" ");
 
-    const primeiroHorario = horario[0][0];
-    const segundoHorario = horario[0][1];
-
+    const horarioPrimeiroDia = entradaValor.substring(2, 5);
+    const horarioSegundoDia = entradaValor.substring(7, 10);
+  
+    const primeiroHorarioPrimeiroDia = horarioPrimeiroDia[0];
+    const segundoHorarioPrimeiroDia = horarioPrimeiroDia[1];
+  
+    const primeiroHorarioSegundoDia = horarioSegundoDia[0];
+    const segundoHorarioSegundoDia = horarioSegundoDia[1];
+  
     if (
-      primeiroDia === undefined ||
-      primeiroHorario === undefined ||
-      turno === null ||
-      turno === undefined
+      primeiroDia == undefined ||
+      primeiroHorarioPrimeiroDia == undefined ||
+      turno == null ||
+      turno == undefined
     ) {
-      return `<p>Código inválido</p>`;
+      return `<p>Código invalido</p>`;
     }
-
+  
     let saida = "<p>";
-    saida = saida + queDia(primeiroDia);
-    if (segundoDia !== null) {
-      saida = saida + "<p>" + queDia(segundoDia) + "</p>";
-    }
-    saida = saida + "</p>";
-
+    saida = saida + queDia(primeiroDia[0]) + "</p>";
+  
     saida =
-      saida + "<p>" + queTurno(turno, primeiroHorario, segundoHorario) + "</p>";
-
+      saida +
+      "<p>" +
+      queHorario(turno, primeiroHorarioPrimeiroDia, segundoHorarioPrimeiroDia) +
+      "</p>";
+  
+    if (segundoDia != null) {
+      saida = saida + "<p>" + queDia(segundoDia[0]) + "</p>";
+    }
+    saida =
+      saida +
+      "<p>" +
+      queHorario(turno, primeiroHorarioSegundoDia, segundoHorarioSegundoDia) +
+      "</p>";
+  
+    saida = saida + "<p>" + queTurno(turno) + "</p>";
+  
     return `${saida}`;
   };
 
@@ -84,45 +103,54 @@ const MyPage: React.FC = () => {
   };
 
   const queTurno = (
-    turno: RegExpMatchArray | null,
-    primeiroHorario: string,
-    segundoHorario: string
-  ): string => {
-    if (turno === null) {
-      return "";
-    }
-
-    let hora = "";
+    turno: RegExpMatchArray  
+    
+  ): any => {
     if (turno[0] === "t") {
-      hora =
-        "<p>" +
-        queHorarioTarde(primeiroHorario) +
-        "</p><p>" +
-        queHorarioTarde(segundoHorario) +
-        "</p>";
-      return hora + "<p>Tarde</p>";
+      return "<p>Tarde</p>";
     }
-    if (turno[0] === "m") {
-      hora =
-        "<p>" +
-        queHorarioManha(primeiroHorario) +
-        "</p><p>" +
-        queHorarioManha(segundoHorario) +
-        "</p>";
-      return hora + "<p>Manhã</p>";
+    if (turno[0] ==="m") {
+      return "<p>Manhã</p>";
     }
-    if (turno[0] === "n") {
-      hora =
-        "<p>" +
-        queHorarioNoite(primeiroHorario) +
-        "</p><p>" +
-        queHorarioNoite(segundoHorario) +
-        "</p>";
-      return hora + "<p>Noite</p>";
+    if (turno[0] ==="n") {
+      return "<p>Noite</p>";
     }
-
-    return "";
   };
+
+  function queHorario(
+    turno: string | RegExpMatchArray,
+    primeiroHorarioPrimeiroDia: string,
+    segundoHorarioPrimeiroDia: string
+  ) {
+    let hora: string;
+    if (turno == "t") {
+      hora =
+        "<p>" +
+        queHorarioTarde(primeiroHorarioPrimeiroDia) +
+        "</p><p>" +
+        queHorarioTarde(segundoHorarioPrimeiroDia) +
+        "</p>";
+      return hora;
+    }
+    if (turno == "m") {
+      hora =
+        "<p>" +
+        queHorarioManha(primeiroHorarioPrimeiroDia) +
+        "</p><p>" +
+        queHorarioManha(segundoHorarioPrimeiroDia) +
+        "</p>";
+      return hora;
+    }
+    if (turno == "n") {
+      hora =
+        "<p>" +
+        queHorarioNoite(primeiroHorarioPrimeiroDia) +
+        "</p><p>" +
+        queHorarioNoite(segundoHorarioPrimeiroDia) +
+        "</p>";
+      return hora;
+    }
+  }
 
   const queHorarioManha = (horario: string): string => {
     switch (horario) {
