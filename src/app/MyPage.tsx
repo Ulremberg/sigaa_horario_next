@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import Footer from "./footer";
+import Image from "next/image";
+import UFRPE from "./../../public/Marca-UFRPE-PB-Negativo-1.webp"
 
 function MyPage (){
   const [saida, setSaida] = useState("");
@@ -7,7 +9,7 @@ function MyPage (){
   const inputRef = useRef<HTMLInputElement>(null);
 
   const traduzir = () => {
-    const entrada = document.getElementById("fhorario") as HTMLInputElement;
+    const entrada = document.querySelector("#fhorario") as HTMLInputElement;
 
     const saida = descodificar(entrada.value);
     setSaida(saida);
@@ -233,10 +235,11 @@ function MyPage (){
   return (
     <>
     
-    <div className="h-screen flex ">
-      <div className="w-1/2 border-r pr-4 "></div>
-      <div className="w-1/2 pl-4 justify-center items-center relative">
-        <div className="py-3 px-3">
+    <div className="h-screen flex flex-row max-md:flex-col max-md:gap-3">
+      <div className="w-1/2 flex-row pr-4 max-md:py-5 max-md:w-fit"><Image src={UFRPE} alt={""}></Image></div>
+      <div className="w-1/2 flex-row pl-4 justify-center items-center relative max-md:py-5 max-md:w-max">
+        <div className="py-3 px-3 ">
+          <div className="flex max-md:flex-col max-md:gap-2">
           <input
             id="fhorario"
             className="text-black py-1 mr-4 pl-1"
@@ -244,22 +247,25 @@ function MyPage (){
             type="text"
           />
           <button
-            className="bg-blue-900 hover:bg-blue-500 text-white rounded-lg px-4 py-2"
+            className="bg-blue-900 hover:bg-blue-500 text-white rounded-lg px-4 py-2 max-md:w-fit"
             onClick={handleButton}
           >
             Traduzir
           </button>
-          <h1 className="text-lg pt-1">Resultado:</h1>
-          {showCard && (<div className="bg-black rounded-lg border border-gray-500 p-4 max-w-fit">
+
+          </div>
+         
+          <h1 className="text-lg pt-1 max-md:py-5">Resultado:</h1>
+          {showCard && (<div className="bg-black rounded-lg border border-gray-500 p-4 max-w-fit max-md:m-4">
             <div
               id="saida"
-              className="text-white text-center"
+              className="text-white text-center max-md:py-5"
               dangerouslySetInnerHTML={{ __html: saida }}
             ></div>
           </div>)}
           
         </div>
-        <Footer className={"absolute bottom-0 py-4 text-center"}  text={'Feito por'} user={'Berg'} href={'https://github.com/Ulremberg'}/>
+        <Footer className={"absolute bottom-0 py-4 text-center max-md:py-5"}  text={'Feito por'} user={'Berg'} href={'https://github.com/Ulremberg'}/>
     
       </div>
       
